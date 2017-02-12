@@ -1,0 +1,29 @@
+extends ../../node_modules/pug-bootstrap/_bootstrap
+
+block body
+
+  include navbar.pug
+
+  p.text-center isAuthenticated: #{isAuthenticated}
+
+  div(class="jumbotron text-center")
+    h1 fcc-voting
+    p Below are polls you own.
+    p Select a poll to see the results and vote, or 
+      if isAuthenticated
+        a(href="/newpoll") make a new poll!
+      else
+        | sign in to make a new poll
+      
+
+    div(id="poll-container")
+      +list-group-custom(id="polls")
+        each poll, i in polls
+          +list-group-item("polls/" + poll._id) #{poll.title}
+
+
+  link(href="/public/css/main.css" rel="stylesheet" type="text/css")
+
+  script(type="text/javascript" src="common/ajax-functions.js")
+  script(type="text/javascript" src="controllers/userController.client.js")
+  script(type="text/javascript" src="controllers/pollController.client.js")

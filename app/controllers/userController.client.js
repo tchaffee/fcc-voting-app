@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+// TODO: Delete this entire function.
+
+  return;
+
 
    var profileId = document.querySelector('#profile-id') || null;
    var profileUsername = document.querySelector('#profile-username') || null;
@@ -13,8 +17,14 @@
    }
 
    ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, function (data) {
-      var userObject = JSON.parse(data);
+      
+      console.log('data');
+      console.log(data);
 
+      var userObject = JSON.parse(data);
+      console.log('userObject');
+      console.log(userObject);
+      
       if (userObject.displayName !== null) {
          updateHtmlElement(userObject, displayName, 'displayName');
       } else {

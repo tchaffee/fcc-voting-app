@@ -1,0 +1,20 @@
+extends ../../node_modules/pug-bootstrap/_bootstrap
+
+append head
+  link(href="/public/css/main.css" rel="stylesheet" type="text/css")
+
+block body
+
+  include navbar.pug
+
+  div.jumbotron
+    h1.text-center Make a new poll
+    form(method="post" action="/api/polls")
+      div.form-group
+        label(for="newpoll-title") Title: 
+        input#newpoll-title.form-control(type="text" name="title" placeholder="Poll Title") 
+      div.form-group
+        label(for="newpoll-options") Options (seperated by line):
+        textarea#newpoll-options.form-control(rows="4" name="options")
+      input.btn.btn-primary(type="submit" value="Make Poll")
+      

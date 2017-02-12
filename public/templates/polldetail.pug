@@ -1,0 +1,41 @@
+extends ../../node_modules/pug-bootstrap/_bootstrap
+
+append head
+  link(href="/public/css/main.css" rel="stylesheet" type="text/css")
+
+block body
+
+  include navbar.pug
+
+  div#vote-alert-append
+
+  div.jumbotron
+    h3 #{title}
+
+    div.row
+      div.col-md-4
+        form#voteform
+          div.form-group
+            label(for="voteformselect") I would like to vote for: 
+            select#voteformselect.form-control(onchange="handleVoteSelect(this)")
+              each answer, i in answers
+                option(value=answer._id) #{answer.term}
+              option(value=-1) Create a new option
+        
+          div#custom-option-container.form-group.hidden
+            label(for="vote-custom-option") Vote with my own option:
+            input#vote-custom-option(type="text")
+        
+          button#pdsubmit.btn.btn-default(type="button" data-poll-id=_id) Submit
+
+      div.col-md-4
+        if answers
+          div#pieChart
+
+  script.
+    var pollId = "#{_id}";
+
+  script(src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js")    
+  script(type="text/javascript" src="../common/d3pie.min.js")
+  script(src='../common/ajax-functions.js')
+  script(src='../controllers/pollDetailController.client.js')
