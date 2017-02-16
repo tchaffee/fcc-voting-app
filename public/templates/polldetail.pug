@@ -14,28 +14,49 @@ block body
 
     div.row
       div.col-md-4
-        form#voteform
-          div.form-group
-            label(for="voteformselect") I would like to vote for: 
-            select#voteformselect.form-control(onchange="handleVoteSelect(this)")
-              each answer, i in answers
-                option(value=answer._id) #{answer.term}
-              option(value=-1) Create a new option
-        
-          div#custom-option-container.form-group.hidden
-            label(for="vote-custom-option") Vote with my own option:
-            input#vote-custom-option(type="text")
-        
-          button#pdsubmit.btn.btn-default(type="button" data-poll-id=_id) Submit
+        div.row
+          div.col-xs-12
+            form#voteform
+              div.form-group
+                label(for="voteformselect") I would like to vote for: 
+                select#voteformselect.form-control(onchange="handleVoteSelect(this)")
+                  each answer, i in answers
+                    option(value=answer._id) #{answer.term}
+                  option(value=-1) Create a new option
+            
+              div#custom-option-container.form-group.hidden
+                label(for="vote-custom-option") Vote with my own option:
+                input#vote-custom-option(type="text")
 
-      div.col-md-4
+              div.form-group
+                button#pdsubmit.btn.btn-block.btn-primary(type="button" data-poll-id=_id) Submit
+
+        if isAuthenticated            
+          div.row
+            div.col-xs-12
+              div.form-group
+                a#tweet-button.btn.btn-block.btn-primary(
+                  data-text=`${title}`, data-show-count="false", data-hashtags="polls, freeCodeCamp", data-size="large")
+                  i.twitter-icon
+                  span.label Share on Twitter
+
+        if isAuthenticated && (String(creator) == String(user_id))
+          div.row
+            div.col-xs-12
+              button#pd-delete.btn.btn-block.btn-danger(type="button" data-poll-id=_id) Delete Poll
+
+
+              
+      div.col-md-8
         if answers
           div#pieChart
 
   script.
     var pollId = "#{_id}";
+    var pollTitle = "#{title}";
 
   script(src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js")    
   script(type="text/javascript" src="../common/d3pie.min.js")
   script(src='../common/ajax-functions.js')
   script(src='../controllers/pollDetailController.client.js')
+  script(async src="//platform.twitter.com/widgets.js" charset="utf-8")

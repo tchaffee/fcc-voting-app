@@ -68,12 +68,15 @@ var pie = new d3pie("pieChart", {
 
 (function () {
 
-   var alertAppend = document.querySelector('#vote-alert-append');
+  var alertAppend = document.querySelector('#vote-alert-append');
+  
+  var submitBtn = document.querySelector('#pdsubmit');
+  var selected = document.querySelector('#voteformselect');
+  var votesList = document.querySelector('#votes');
+  var voteCustom= document.querySelector('#vote-custom-option');
+  var tweetLink = document.querySelector('#tweet-button');
+  var deleteBtn = document.querySelector('#pd-delete');
 
-   var submitBtn = document.querySelector('#pdsubmit');
-   var selected = document.querySelector('#voteformselect');
-   var votesList = document.querySelector('#votes');
-   var voteCustom= document.querySelector('#vote-custom-option');
 
   function createAlert(type, message) {
     
@@ -122,7 +125,12 @@ var pie = new d3pie("pieChart", {
     pie.updateProp('data.content', pieData);      
       
    }
-
+   
+   // Load the tweet button href.
+   ajaxFunctions.ready(function() {
+      tweetLink.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(pollTitle) + '&url=' + encodeURIComponent(window.location.href);
+   });
+   
   // Update the existing chart with data.
    ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', appUrl + '/api/polls/' + pollId, updatePollChart));
 
@@ -155,14 +163,15 @@ var pie = new d3pie("pieChart", {
 
    }, false);
 
-/*
-   deleteButton.addEventListener('click', function () {
+  // Handle Delete Button.
+  deleteBtn.addEventListener('click', function () {
+    var apiUrl = appUrl + '/api/polls/' + deleteBtn.getAttribute('data-poll-id');
 
-      ajaxFunctions.ajaxRequest('DELETE', apiUrl, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateClickCount);
-      });
+    ajaxFunctions.ajaxRequest('DELETE', apiUrl, function () {
+      document.location.href = appUrl;
+    });
 
    }, false);
-*/
+
 })();
 

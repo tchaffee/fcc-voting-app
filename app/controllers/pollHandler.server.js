@@ -137,16 +137,22 @@ function PollHandler () {
 			.findOne({ _id: req.params.id })
 			.exec(function (err, poll) {
 
-			  if (err) throw(err);
+			  if (err) {
+			  	res.status(403).send({
+			  		error: 'Error trying to find poll.',
+			  		errorMessage: err
+			  	});
+			  	return;
+			  }
 				
 				if (String(poll.creator) !== String(req.user._id)) {
-					res.status(403).send('User not allowed to perform this action.');
+					res.status(403).send({error: 'Only poll owner is allowed to perform this action.'});
 					return;
 				}
 
 				poll.remove(function (err) {
 					if (err) throw(err);
-					res.status(204).send();
+					res.status(204).send({success: 'Poll deleted.'});
 				});
 
 			});
